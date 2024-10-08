@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        h2, h3 {
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            flex: 1;
+            min-width: 280px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        .pipeline {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .pipeline div {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            color: #34495e;
+            text-align: center;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .pipeline div:hover {
+            filter: brightness(95%);
+        }
+        .pipeline .open {
+            background-color: #bce4cc;
+        }
+        .pipeline .awaiting-approval {
+            background-color: #e7c285;
+        }
+        .pipeline .overdue {
+            background-color: #e08a80;
+        }
+        .pipeline .completed {
+            background-color: #76a8c9;
+        }
+        .pipeline .in-progress {
+            background-color: #dda0d0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background-color: #34495e;
+            color: #ffffff;
+        }
+        td {
+            background-color: #f7f9fc;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        button {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .table-container {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .chart-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .chart {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .chart h4 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .progress {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #3498db;
+            width: 0;
+            text-align: center;
+            color: rgb(14, 13, 13);
+            line-height: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Task Overview -->
+        <div class="section">
+            <h2>Task Overview</h2>
+            <div class="row">
+                <div class="card">
+                    <h3>All Tasks</h3>
+                    <p>20</p>
+                </div>
+                <div class="card">
+                    <h3>Assigned Tasks</h3>
+                    <p>15</p>
+                </div>
+                <div class="card">
+                    <h3>Self Assigned Tasks</h3>
+                    <p>5</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Status Pipeline -->
+        <div class="section">
+            <h2>Task Status</h2>
+            <div class="pipeline">
+                <div class="open">OPEN<br>5</div>
+                <div class="awaiting-approval">Awaiting Approval<br>2</div>
+                <div class="overdue">Overdue<br>1</div>
+                <div class="completed">Completed<br>4</div>
+                <div class="in-progress">In Progress<br>8</div>
+            </div>
+        </div>
+
+        <!-- Pending Task Table -->
+        <div class="section">
+            <h3>Pending Tasks</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task ID</th>
+                            <th>Priority</th>
+                            <th>Task Name</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <script>
+                            for (let i = 1; i <= 15; i++) {
+                                const progressValue = Math.floor(Math.random() * 100);
+                                document.write(`<tr>
+                                    <td>#${i}</td>
+                                    <td>High</td>
+                                    <td>Task ${i}</td>
+                                    <td>Open</td>
+                                    <td>Description ${i}</td>
+                                    <td>2024-10-01</td>
+                                    <td>2024-10-10</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: ${progressValue}%">${progressValue}%</div>
+                                        </div>
+                                    </td>
+                                </tr>`);
+                            }
+                        </script>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Completed Task Table -->
+        <div class="section">
+            <h3>Completed Tasks</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task ID</th>
+                            <th>Task Name</th>
+                            <th>Assigned Date</th>
+                            <th>Completed Date</th>
+                            <th>Assined By</th>
+                            <th>Priority</th>
+                            <th>Total Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <script>
+                            for (let i = 1; i <= 15; i++) {
+                                let hours = Math.floor(Math.random() * 10) + 1;
+                                document.write(`<tr>
+                                    <td>#C${i}</td>
+                                    <td>Task ${i}</td>
+                                    <td>2024-09-0${i}</td>
+                                    <td>2024-09-1${i}</td>
+                                    <td>Jhon</td>
+                                    <td>High</td>
+                                    <td>${hours} hrs</td>
+                                </tr>`);
+                            }
+                        </script>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Charts in the same row -->
+        <div class="chart-container">
+            <div class="chart" style="width: 300px; max-width: 30%;">
+                <h4>Task Priority Distribution</h4>
+                <canvas id="priorityChart"></canvas>
+            </div>
+            <div class="chart" style="max-width: 30%;width: 800px;">
+                <h4>Task Completion Overview</h4>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const priorityChart = new Chart(document.getElementById('priorityChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['High', 'Medium', 'Low'],
+                datasets: [{
+                    data: [10, 15, 5],
+                    backgroundColor: ['#e74c3c', '#f39c12', '#2ecc71'],
+                    hoverBackgroundColor: ['#c0392b', '#e67e22', '#27ae60']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        const statusChart = new Chart(document.getElementById('statusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed On Time', 'Completed Before Time', 'Delayed'],
+                datasets: [{
+                    data: [5,1, 2],
+                    backgroundColor: ['#3498db', '#8e44ad', '#2ecc71'],
+                    hoverBackgroundColor: ['#2980b9', '#732d91', '#27ae60']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                }
+            }
+        });
+    </script>
+</body>
+</html>
